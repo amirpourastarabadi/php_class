@@ -2,48 +2,45 @@
 
 require __DIR__ . './FileSystemInterface.php';
 
-class MyfileSystem implements FileSystemInterface
-{
-    public function isExists(string $location): bool
-    {
-        return false;
+class fileSystem implements FileSystemInterface{
+    public function isExists(string $location):bool{
+        return file_exists($location);
     }
 
-    public function isFile(string $location): bool
-    {
-        return false;
+    public function isFile(string $location):bool{
+        return is_file($location);
     }
 
-    public function isDire(string $location): bool
-    {
-        return false;
+    public function isDire($location):bool{
+        return is_dir($location);
     }
 
-    public function copy(string $source, string $destination): void
-    {
-    }
-    
-    public function move(string $source, string $destination): void
-    {
+    public function copy(string $source , string $destination):void{
+        copy($source , $destination);
     }
 
-    public function readFile(string $location): string
-    {
-        return 'false';
+    public function move(string $source , string $destination):void{
+        move($source,$destination);
     }
 
-    public function writeInFile(string $location, string $content): void
-    {
-        
+    public function readFile(string $location):string{
+        $file = fopen($location,"r");
+        echo fread($file,filesize($location));
+        fclose($file);
     }
-    
-    public function printFilesAndDirectories(string $location): string
-    {
-        return 'false';
+
+    public function writeInFile($location , string $content):void{
+        $file = fopen($location , "w");
+        fwrite($file,$content);
+        fclose($file);
     }
-    
-    public function printFilesAndDirectoriesRecursivly(string $location): string
-    {
-        return 'false';
+
+    public function printFilesAndDirectories($location):string{
+        $result = "";
+        $list = scandir($location);
+
+        foreach ($list as $key => $value) {
+            $result += $location . "/" . $value . "/n";
+        }
     }
 }
